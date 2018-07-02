@@ -43,7 +43,7 @@ def unauthorized_handler():
 
 
 #main route
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
         return '''
@@ -75,8 +75,18 @@ def logout():
     flask_login.logout_user()
     return "Thank you. You've Logged out"
 
-
-
+@app.route('/comment')
+@flask_login.login_required
+def comment():
+    #return 'Welcome: ' + flask_login.current_user.id
+    return '''
+               <form action='comment' method='POST'>
+                <input type='text' name='comment' id='comemnt' placeholder='Comment'/>
+                <input type='submit' name='submit'/>
+               </form>
+               '''
+    comments = {'comment' : flask.request.form['comment']}
+    print(comments)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5051)
+    app.run(debug=True, port=2020)
